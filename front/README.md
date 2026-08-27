@@ -1,5 +1,8 @@
-# React + Vite
 
+# React + Vite
+## Maquetación Front-End
+
+Desarrollo inicial de la interfaz del sistema de gestión inmobiliaria.
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
