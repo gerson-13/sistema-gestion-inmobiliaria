@@ -29,8 +29,8 @@ export default function Navbar() {
           <Link to="/" className="navbar-logo" onClick={closeMobile}>
             <div className="navbar-logo-icon">🏠</div>
             <div className="navbar-logo-text">
-              <strong>Inmobiliaria</strong>
-              <span>Del Sur</span>
+              <strong>CENTURY</strong>
+              <span> 21</span>
             </div>
           </Link>
 

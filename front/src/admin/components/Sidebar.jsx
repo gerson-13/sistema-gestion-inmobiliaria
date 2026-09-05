@@ -37,8 +37,8 @@ export default function Sidebar({ collapsed, onToggle }) {
       <Link to={homeLink} className="sidebar-brand">
         <div className="sidebar-brand-icon">🏠</div>
         <div className="sidebar-brand-text">
-          <strong>Inmobiliaria</strong>
-          <span>Del Sur</span>
+          <strong>CENTURY</strong>
+          <span> 21</span>
         </div>
         <span className="sidebar-brand-badge">{isAdmin ? "ADMIN" : "AGENTE"}</span>
       </Link>

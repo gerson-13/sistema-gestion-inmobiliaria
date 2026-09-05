@@ -70,7 +70,7 @@ export default function Login() {
       <div className="login-brand">
         <div className="login-brand-inner">
           <div className="login-logo">🏠</div>
-          <h1 className="login-brand-name">Inmobiliaria Del Sur</h1>
+          <h1 className="login-brand-name">CENTURY 21</h1>
           <p className="login-brand-tagline">
             Sistema de gestión inmobiliaria
           </p>

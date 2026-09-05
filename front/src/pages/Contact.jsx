@@ -16,7 +16,7 @@ const CONTACT_INFO = [
   {
     icon: "✉️",
     label: "Correo electrónico",
-    text: "info@inmobiliariadelsur.com",
+    text: "info@century21.com",
   },
   {
     icon: "🕐",

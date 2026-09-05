@@ -50,7 +50,7 @@ export default function About() {
               <em>mayor responsabilidad</em>
             </h1>
             <p>
-              Somos Inmobiliaria Del Sur, una empresa comprometida con
+              Somos CENTURY 21, una empresa comprometida con
               ayudarte a encontrar el hogar o la inversión perfecta. Más de
               10 años de experiencia nos respaldan.
             </p>
@@ -67,13 +67,13 @@ export default function About() {
             <div className="about-who-image">
               <img
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80"
-                alt="Equipo Inmobiliaria Del Sur"
+                alt="Equipo CENTURY 21"
               />
             </div>
             <div className="about-who-text">
               <h2 className="title-underline">¿Quiénes somos?</h2>
               <p style={{ marginTop: "24px" }}>
-                Inmobiliaria Del Sur es una empresa peruana fundada con el
+                CENTURY 21 es una empresa peruana fundada con el
                 propósito de hacer más accesible, seguro y transparente el
                 proceso de compra, venta y alquiler de propiedades en Lima.
               </p>
@@ -112,10 +112,7 @@ export default function About() {
               <div className="mvv-icon">🎯</div>
               <h3>Misión</h3>
               <p>
-                Facilitar el acceso a propiedades de calidad en Lima,
-                ofreciendo un servicio inmobiliario profesional, honesto y
-                centrado en las necesidades del cliente. Buscamos que cada
-                persona encuentre su lugar ideal con total confianza.
+                Conectar a las personas con la propiedad que se ajusta a sus necesidades, brindando un servicio de intermediación cercano, ágil y respaldado por procesos comerciales ordenados.
               </p>
             </div>
 
@@ -124,10 +121,7 @@ export default function About() {
               <div className="mvv-icon">🔭</div>
               <h3>Visión</h3>
               <p>
-                Ser la inmobiliaria de referencia en Lima, reconocida por la
-                excelencia en el servicio, la transparencia en cada
-                transacción y el impacto positivo en la vida de nuestros
-                clientes y la comunidad.
+                Ser reconocida en el mercado limeño como una inmobiliaria de referencia por la transparencia, agilidad y confiabilidad de su proceso comercial.
               </p>
             </div>
 

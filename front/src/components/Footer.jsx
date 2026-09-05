@@ -13,8 +13,8 @@ export default function Footer() {
             <div className="footer-logo">
               <div className="footer-logo-icon">🏠</div>
               <div className="footer-logo-text">
-                <strong>Inmobiliaria</strong>
-                <span>Del Sur</span>
+                <strong>CENTURY</strong>
+                <span> 21</span>
               </div>
             </div>
             <p>
@@ -65,7 +65,7 @@ export default function Footer() {
             </div>
             <div className="footer-contact-item">
               <span className="icon">✉️</span>
-              <p>info@inmobiliariadelsur.com</p>
+              <p>info@century21.com</p>
             </div>
             <div className="footer-contact-item">
               <span className="icon">🕐</span>
@@ -75,7 +75,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>© {year} Inmobiliaria Del Sur. Todos los derechos reservados.</p>
+          <p>© {year} CENTURY 21. Todos los derechos reservados.</p>
           <div className="footer-bottom-links">
             <a href="#">Política de privacidad</a>
             <a href="#">Términos de uso</a>
