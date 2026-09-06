@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard";
 import { getFeaturedProperties } from "../data/properties";
@@ -18,7 +18,7 @@ const DISTRITOS = [
 export default function Home() {
   const navigate = useNavigate();
   const featured = getFeaturedProperties();
-  const [bgLoaded, setBgLoaded] = useState(false);
+  const bgRef = useRef(null);
 
   // Search state
   const [search, setSearch] = useState({
@@ -28,11 +28,12 @@ export default function Home() {
     precio: "",
   });
 
+  // Animar el Hero BG sin doble-fetch: clase 'loaded' tras primer frame de pintura
   useEffect(() => {
-    const img = new Image();
-    img.src =
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=85";
-    img.onload = () => setBgLoaded(true);
+    const raf = requestAnimationFrame(() => {
+      if (bgRef.current) bgRef.current.classList.add("loaded");
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   const handleSearch = (e) => {
@@ -51,7 +52,7 @@ export default function Home() {
           HERO
       ============================== */}
       <section className="home-hero">
-        <div className={`home-hero-bg${bgLoaded ? " loaded" : ""}`} />
+        <div className="home-hero-bg" ref={bgRef} />
         <div className="home-hero-overlay" />
 
         <div className="container">
@@ -230,8 +231,12 @@ export default function Home() {
 
             <div className="about-strip-image">
               <img
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80"
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&fm=webp&q=75"
                 alt="Equipo inmobiliario"
+                loading="lazy"
+                width="700"
+                height="560"
+                fetchpriority="low"
               />
               <div className="about-strip-image-badge">
                 <strong>500+</strong>

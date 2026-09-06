@@ -188,7 +188,6 @@ export default function PropertyDetail() {
               <p className="detail-meta-line">
                 <span className={`badge badge-${operacion.toLowerCase()}`}>{operacion}</span>
                 <span className="detail-tipo-tag">{tipo}</span>
-                <span className="detail-id-tag">ID: {property.id}</span>
               </p>
 
               {/* Precio prominente (como referencia: arriba) */}
@@ -255,13 +254,6 @@ export default function PropertyDetail() {
                 {ubicacion}
               </p>
               <div className="detail-map">
-                <div className="detail-map-placeholder">
-                  <span className="map-icon">🗺️</span>
-                  <strong>{ubicacion}</strong>
-                  <span style={{ fontSize: "12px" }}>
-                    Mapa disponible al conectar con el backend
-                  </span>
-                </div>
               </div>
             </div>
 
@@ -287,14 +279,6 @@ export default function PropertyDetail() {
 
                 <div className="agent-info">
                   <div className="agent-avatar">
-                    <img
-                      src={agent.foto || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80"}
-                      alt={agent.nombre}
-                      onError={(e) => {
-                        e.target.src =
-                          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80";
-                      }}
-                    />
                   </div>
                   <h3 className="agent-name">{agent.nombre}</h3>
                   <p className="agent-role">{agent.cargo || "Agente Inmobiliario"}</p>

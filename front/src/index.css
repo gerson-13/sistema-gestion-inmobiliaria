@@ -2,7 +2,7 @@
    SISTEMA INMOBILIARIO — DESIGN TOKENS & GLOBAL STYLES
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+/* Fuente Inter cargada de forma no-bloqueante desde index.html */
 
 /* ---------- CSS Variables ---------- */
 :root {
