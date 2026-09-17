@@ -29,3 +29,7 @@ target/
 ### Environment / Sensitive ###
 .env
 *.local
+
+### Database Backups / Dumps ###
+backup_*.sql
+*.dump
