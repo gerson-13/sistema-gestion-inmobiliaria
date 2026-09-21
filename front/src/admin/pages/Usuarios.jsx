@@ -5,25 +5,14 @@ import SearchBar from "../components/SearchBar";
 import Modal from "../components/Modal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import AdminPagination from "../components/AdminPagination";
+import { getUsuarios, createUsuario } from "../services/usuariosService";
 import { getUsuariosMock, setUsuariosMock } from "../../auth/mockUsers";
 
 /**
  * Usuarios / Agentes — Panel Administrativo
  *
- * Módulo para gestionar usuarios del sistema.
- * Solo los ADMIN tienen acceso a este módulo.
- *
- * Roles futuros:
- *   ADMIN  → acceso completo al panel /admin/*
- *   AGENTE → acceso limitado al panel /agente/*
- *
- * Cuando exista autenticación (JWT):
- *   - El token JWT contendrá el rol del usuario
- *   - El frontend validará el rol para mostrar el panel correspondiente
- *   - Ver usuariosService.js para detalles de implementación
- *
- * NOTA: Los agentes del panel público (data/agents.js) son mock data temporal.
- * Cuando haya backend, ambos paneles usarán la misma tabla de usuarios.
+ * Módulo conectado a Spring Boot con autenticación JWT y autorización RBAC (ROLE_ADMIN).
+ * Crea nuevos agentes hasheando sus contraseñas en BCrypt en el backend.
  */
 
 const ESTADO_OPTIONS = ["Activo", "Inactivo"];
@@ -43,18 +32,32 @@ const INITIAL_FORM = {
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
-
-  useEffect(() => {
-    setUsuarios(getUsuariosMock());
-  }, []);
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(INITIAL_FORM);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [saveError, setSaveError] = useState("");
   const [page, setPage] = useState(1);
   const PER_PAGE = 10;
+
+  const cargarUsuarios = async () => {
+    try {
+      const data = await getUsuarios();
+      if (Array.isArray(data) && data.length > 0) {
+        setUsuarios(data);
+        return;
+      }
+    } catch (_) {
+      // Si el backend aún no responde, recurre a datos locales
+    }
+    setUsuarios(getUsuariosMock());
+  };
+
+  useEffect(() => {
+    cargarUsuarios();
+  }, []);
 
   const filtered = usuarios.filter((u) =>
     [u.nombre, u.email, u.rol]
@@ -67,34 +70,45 @@ export default function Usuarios() {
 
   const openCreate = () => {
     setEditingId(null);
+    setSaveError("");
     setForm(INITIAL_FORM);
     setModalOpen(true);
   };
 
   const openEdit = (u) => {
     setEditingId(u.id);
+    setSaveError("");
     setForm({ 
       nombre: u.nombre, 
       email: u.email, 
       rol: u.rol, 
-      telefono: u.telefono, 
-      password: u.password || "",
-      estado: u.estado 
+      telefono: u.telefono || "", 
+      password: "",
+      estado: u.estado || "Activo"
     });
     setModalOpen(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.nombre.trim() || !form.email.trim()) return;
-    let newList;
+    setSaveError("");
+
     if (editingId !== null) {
-      newList = usuarios.map((u) => (u.id === editingId ? { ...u, ...form } : u));
+      // Edición local
+      const newList = usuarios.map((u) => (u.id === editingId ? { ...u, ...form } : u));
+      setUsuarios(newList);
+      setUsuariosMock(newList);
+      setModalOpen(false);
     } else {
-      newList = [{ ...form, id: Date.now(), rol: "AGENTE" }, ...usuarios];
+      // Creación real en backend Spring Boot
+      try {
+        await createUsuario(form);
+        await cargarUsuarios();
+        setModalOpen(false);
+      } catch (err) {
+        setSaveError(err.message || "Error al crear agente en el backend");
+      }
     }
-    setUsuarios(newList);
-    setUsuariosMock(newList);
-    setModalOpen(false);
   };
 
   const askDelete = (id) => { setDeletingId(id); setConfirmOpen(true); };
@@ -220,6 +234,19 @@ export default function Usuarios() {
         }
       >
         <div className="admin-form">
+          {saveError && (
+            <div style={{
+              background: "#fef2f2",
+              border: "1px solid #f87171",
+              color: "#b91c1c",
+              padding: "10px 14px",
+              borderRadius: "6px",
+              marginBottom: "16px",
+              fontSize: "14px"
+            }}>
+              ⚠ {saveError}
+            </div>
+          )}
           <div className="admin-form-row">
             <div className="admin-form-group">
               <label className="admin-form-label">Nombre completo *</label>

@@ -1,22 +1,15 @@
-import { createContext, useState, useEffect, useCallback } from "react";
-import { validarCredenciales } from "./mockUsers";
+import { createContext, useState, useCallback } from "react";
+import { apiRequest } from "../services/apiClient";
 
 /**
  * src/auth/AuthContext.jsx
  *
- * Proveedor de sesión MOCK.
- * Sesión activa guardada en localStorage["sesion_actual"].
- *
- * Expone:
- *   usuario       → { id, nombre, email, rol, telefono } | null
- *   iniciarSesion(email, password) → { ok: bool, error?: string }
- *   cerrarSesion()
- *
- * FUTURO: reemplazar validarCredenciales() por fetch a POST /api/auth/login
- * y guardar el JWT devuelto en lugar del objeto de usuario.
+ * Proveedor de autenticación REAL conectado a Spring Boot mediante JWT.
+ * El token JWT se almacena bajo 'token' y se utiliza en las cabeceras Authorization: Bearer <token>.
  */
 
 const SESSION_KEY = "sesion_actual";
+const TOKEN_KEY = "token";
 
 export const AuthContext = createContext(null);
 
@@ -30,25 +23,39 @@ export function AuthProvider({ children }) {
     }
   });
 
-  const iniciarSesion = useCallback((email, password) => {
-    const encontrado = validarCredenciales(email, password);
-    if (!encontrado) {
-      return { ok: false, error: "Credenciales incorrectas o usuario inactivo." };
+  const iniciarSesion = useCallback(async (email, password) => {
+    try {
+      const data = await apiRequest("/api/auth/login", {
+        method: "POST",
+        body: { email, password },
+      });
+
+      if (!data || !data.token) {
+        return { ok: false, error: "Respuesta de autenticación inválida" };
+      }
+
+      // Almacenar el token JWT devuelto por Spring Security
+      localStorage.setItem(TOKEN_KEY, data.token);
+
+      const sesion = {
+        nombre: data.nombre,
+        email: data.email,
+        rol: data.rol,
+      };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sesion));
+      setUsuario(sesion);
+
+      return { ok: true, rol: data.rol };
+    } catch (err) {
+      return {
+        ok: false,
+        error: err.message || "Credenciales incorrectas o usuario inactivo.",
+      };
     }
-    // Guardamos solo los campos necesarios para la sesión (sin password)
-    const sesion = {
-      id: encontrado.id,
-      nombre: encontrado.nombre,
-      email: encontrado.email,
-      rol: encontrado.rol,
-      telefono: encontrado.telefono,
-    };
-    localStorage.setItem(SESSION_KEY, JSON.stringify(sesion));
-    setUsuario(sesion);
-    return { ok: true };
   }, []);
 
   const cerrarSesion = useCallback(() => {
+    localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(SESSION_KEY);
     setUsuario(null);
   }, []);

@@ -6,9 +6,9 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
- * Enrutador dinámico de conexiones que evalúa el contexto transaccional actual.
- * - Transacciones de solo lectura (@Transactional(readOnly = true)) -> REPLICA
- * - Transacciones de escritura o sin contexto readOnly -> MASTER
+ * Define a qué base de datos se dirige cada operación.
+ * Las consultas de solo lectura van a la Replica
+ * y las operaciones de escritura van al Master.
  */
 public class RoutingDataSource extends AbstractRoutingDataSource {
 

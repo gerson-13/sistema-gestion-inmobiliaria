@@ -29,7 +29,7 @@ export default function Login() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email.trim() || !form.password) {
       setError("Completa todos los campos.");
@@ -37,10 +37,8 @@ export default function Login() {
     }
 
     setLoading(true);
-
-    // Pequeño delay para dar feedback visual
-    setTimeout(() => {
-      const resultado = iniciarSesion(form.email, form.password);
+    try {
+      const resultado = await iniciarSesion(form.email, form.password);
       setLoading(false);
 
       if (!resultado.ok) {
@@ -48,20 +46,17 @@ export default function Login() {
         return;
       }
 
-      // Leer rol directo desde localStorage para redirigir
-      try {
-        const sesion = JSON.parse(localStorage.getItem("sesion_actual"));
-        if (sesion?.rol === "ADMIN") {
-          navigate("/admin/dashboard");
-        } else if (sesion?.rol === "AGENTE") {
-          navigate("/agente/propiedades");
-        } else {
-          navigate("/");
-        }
-      } catch (_) {
+      if (resultado.rol === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else if (resultado.rol === "AGENTE") {
+        navigate("/agente/propiedades");
+      } else {
         navigate("/");
       }
-    }, 400);
+    } catch (err) {
+      setLoading(false);
+      setError("Error al conectar con el servidor.");
+    }
   };
 
   return (

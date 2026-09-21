@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Configuración de orígenes de datos Master y Replica con enrutamiento diferido.
- * Utiliza LazyConnectionDataSourceProxy para garantizar que la conexión física
- * se adquiera después de inicializar el contexto transaccional de Spring.
+ * Configuración de las conexiones al Master y Replica.
+ * Se usa LazyConnectionDataSourceProxy para elegir la conexión
+ * cuando ya se conoce el tipo de transacción.
  */
 @Configuration
 public class DataSourceConfig {
